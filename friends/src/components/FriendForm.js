@@ -19,8 +19,9 @@ const FriendForm = ({ friends, setFriends }) => {
     }
 
     const handleSubmit = e => {
+        e.preventDefault();
         authWithAxios().post("/friends", friendInfo)
-            .then(res => console.log(res))
+            .then(res => setFriends(res.data))
             .catch(err => console.log(err.response))
     }
 

@@ -11,14 +11,14 @@ const FriendsList = () => {
         authWithAxios().get("/friends")
             .then(res => setFriends(res.data))
             .catch(err => console.log(err.response))
-    }, [])
+    }, [friends.length])
 
     return (
         <>
             <h1>Friends List!</h1>
             <FriendForm friends={friends} setFriends={setFriends} />
             {
-                friends.map((friend, idx) => <Friend key={idx} friend={friend} />)
+                friends.map((friend, idx) => <Friend key={idx} friend={friend} setFriends={setFriends} />)
             }
         </>
     )
