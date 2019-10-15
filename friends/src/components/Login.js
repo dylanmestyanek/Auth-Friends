@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { render } from "@testing-library/react"
 
-import axiosWithAuth from "../utils/axiosWithAuth"
+import authWithAxios from "../utils/authWithAxios"
 
 const Login = props => {
     const [credentials, setCredentials] = useState({
@@ -18,7 +18,7 @@ const Login = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        axiosWithAuth().post("/login", credentials)
+        authWithAxios().post("/login", credentials)
             .then(res => {
                 localStorage.setItem('token', res.data.payload)
                 props.history.push("/friendslist")    
