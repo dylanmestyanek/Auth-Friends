@@ -7,6 +7,7 @@ import FriendForm from "./FriendForm"
 const FriendsList = () => {
     const [friends, setFriends] = useState([])
 
+    // Retrieves friends from localhost API, and sets them as 'friends' state
     useEffect(() => {
         authWithAxios().get("/friends")
             .then(res => setFriends(res.data))

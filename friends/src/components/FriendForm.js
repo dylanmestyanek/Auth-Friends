@@ -1,9 +1,16 @@
 import React, { useState } from "react"
 
 import authWithAxios from "../utils/authWithAxios"
+import Friend from "./Friend"
 
-const FriendForm = ({ friends, setFriends }) => {
-    const [friendInfo, setFriendInfo] = useState({
+const FriendForm = ({ 
+    setFriends, 
+    friendToUpdate, 
+    setIsEditing 
+}) => {
+    // If receiving 'friendToUpdate' info from Friend.js, set that as the 'friendInfo' state
+    // which will populate the form with that info, OTHERWISE, set 'friendInfo' as an empty object 
+    const [friendInfo, setFriendInfo] = useState( friendToUpdate ? friendToUpdate : {
         name: '',
         age: '',
         email: '',
@@ -20,9 +27,19 @@ const FriendForm = ({ friends, setFriends }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        authWithAxios().post("/friends", friendInfo)
-            .then(res => setFriends(res.data))
-            .catch(err => console.log(err.response))
+        
+        // If you AREN'T updating a friend's info, add the 'friendInfo' object as a new friend to the API data
+        if (!friendToUpdate){
+            authWithAxios().post("/friends", friendInfo)
+                .then(res => setFriends(res.data))
+                .catch(err => console.log(err.response))
+        } else {
+            // If you ARE editing a friend send a 'axios.put' request, with the UPDATED 'friendInfo' object
+            authWithAxios().put(`/friends/${friendToUpdate.id}`, friendInfo)
+                .then(res => setFriends(res.data))
+                .catch(err => console.log(err))
+            setIsEditing(false)
+        }
     }
 
     return (
@@ -48,7 +65,7 @@ const FriendForm = ({ friends, setFriends }) => {
                 value={friendInfo.email}
                 onChange={handleChange}
             />
-            <button type="submit">Add Friend!</button>
+            <button type="submit">{friendToUpdate ? 'Update Friend!' : 'Add Friend!'}</button>
         </form>
     )
 }

@@ -16,6 +16,8 @@ const Login = props => {
         })
     }
 
+    // Upon submitting form, if credentials match, a token will be
+    // saved to localStorage and user will be sent to friendsList page
     const handleSubmit = e => {
         e.preventDefault();
         authWithAxios().post("/login", credentials)
